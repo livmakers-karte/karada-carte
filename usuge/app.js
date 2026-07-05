@@ -192,13 +192,16 @@ function renderResult(){
   txt('offerTitle', off.title); txt('offerLead', off.lead);
   txt('guaranteeBadge', '◎ '+(es.guarantee?es.guarantee.label:'全額返金保証'));
   var ctas=document.getElementById('offerCtas'); ctas.innerHTML='';
-  var prodUrl=(CONFIG.usuge.productUrls||{})[(t.products[0]||{}).urlKey];
-  // ① らくトク便（定期）＝LTV本線を主CTAに
-  if(es.rakutoku && es.rakutoku.url && !ph(es.rakutoku.url)) ctas.appendChild(mkCta(off.ctaRakutokuLabel, es.rakutoku.url, 'main'));
-  else ctas.appendChild(mkCta(off.ctaRakutokuLabel+'（準備中）', null, 'main'));
-  // ② 単品はサブ導線
-  if(prodUrl && !ph(prodUrl)) ctas.appendChild(mkCta(off.ctaProductLabel, prodUrl, 'ghost'));
-  else ctas.appendChild(mkCta(off.ctaProductLabel+'（準備中）', null, 'ghost'));
+  var urls=CONFIG.usuge.productUrls||{};
+  // ① タイプに接続した らくトク便(定期) 製品を主CTAに（複合型は2製品＝内外併用で客単価最大）
+  (t.products||[]).forEach(function(p,i){
+    var u=urls[p.urlKey];
+    var label = (i===0) ? off.ctaRakutokuLabel : ('＋ '+p.name+'（らくトク便）');
+    if(u && !ph(u)) ctas.appendChild(mkCta(label, u, i===0?'main':'ghost'));
+    else ctas.appendChild(mkCta(label+'（準備中）', null, i===0?'main':'ghost'));
+  });
+  // ② 定期でなく単品で試す（低ハードル導線）
+  if(off.entryUrl && !ph(off.entryUrl)) ctas.appendChild(mkCta(off.entryLabel||'単品で試す', off.entryUrl, 'ghost'));
   // ③ LINE（設定時のみ／未設定なら下部の再診断ブロックが受け皿）
   if(es.line && es.line.url && !ph(es.line.url)) ctas.appendChild(mkCta(off.ctaLineLabel, es.line.url, 'line'));
   if(off.microtrust){ var mt=document.createElement('p'); mt.className='small'; mt.style.cssText='color:#c3d2ca;text-align:center;margin:12px 0 0;font-size:11.5px'; mt.textContent=off.microtrust; ctas.appendChild(mt); }

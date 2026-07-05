@@ -105,7 +105,9 @@
   header.site .navlink{color:#c3d2ca;text-decoration:none;font-size:13px}
 
   /* hero */
-  .hero{background-image:linear-gradient(158deg,rgba(16,32,28,.93) 0%,rgba(27,42,52,.80) 55%,rgba(30,58,52,.72) 100%),var(--photo-hero);background-size:cover;background-position:center;color:#fff;padding:54px 0 48px;position:relative;overflow:hidden}
+  .hero{color:#fff;padding:54px 0 48px;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;z-index:0;background-image:var(--photo-hero);background-size:cover;background-position:center;filter:brightness(1.22) saturate(1.05)}
+  .hero::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(158deg,rgba(16,32,28,.72) 0%,rgba(27,42,52,.5) 55%,rgba(30,58,52,.40) 100%)}
   .hero .wrap{display:grid;grid-template-columns:1.22fr .78fr;gap:28px;align-items:center;position:relative;z-index:2}
   @media(max-width:760px){.hero{padding:40px 0 36px}.hero .wrap{grid-template-columns:1fr;gap:16px}}
   .hero .eyebrow{color:#dCe6d1;font-size:12.5px;letter-spacing:.18em;font-weight:700;margin:0 0 15px;display:inline-flex;align-items:center;gap:9px}
@@ -305,11 +307,12 @@
   .faq .a{padding:0 4px 16px;color:var(--ink);font-size:14px;line-height:1.8}
 
   /* ===== 写真バンド（フルブリード・シネマティック） ===== */
-  .photoband{position:relative;color:#fff;padding:70px 0;background-size:cover;background-position:center}
-  .photoband::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(18,32,28,.86),rgba(30,58,52,.52))}
-  .photoband .wrap{position:relative;z-index:1}
-  .pb-botanical{background-image:var(--photo-botanical)}
-  .pb-water{background-image:var(--photo-water)}
+  .photoband{position:relative;color:#fff;padding:70px 0;overflow:hidden}
+  .photoband::before{content:"";position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;filter:brightness(1.2) saturate(1.06)}
+  .photoband::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(120deg,rgba(18,32,28,.58),rgba(30,58,52,.32))}
+  .photoband .wrap{position:relative;z-index:2}
+  .pb-botanical::before{background-image:var(--photo-botanical)}
+  .pb-water::before{background-image:var(--photo-water)}
   .pb-eyebrow{color:#e2ebd9;font-size:11.5px;letter-spacing:.2em;font-weight:700;margin:0 0 12px}
   .pb-title{font-family:var(--serif);font-size:clamp(23px,4.8vw,36px);color:#fff;margin:0 0 12px;line-height:1.42;text-shadow:0 2px 18px rgba(0,0,0,.45)}
   .pb-lead{color:#edf2ec;font-size:clamp(14px,2.2vw,16px);max-width:40em;margin:0;text-shadow:0 1px 12px rgba(0,0,0,.35)}
@@ -485,7 +488,7 @@
           </div>
 
           <div class="kbox">
-            <p class="kt">主治医からの所見（傾向の目安）</p>
+            <p class="kt">チェック結果のまとめ（傾向の目安）</p>
             <p id="findingText"></p>
           </div>
 
