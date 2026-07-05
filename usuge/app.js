@@ -210,8 +210,8 @@ function renderResult(){
   var rc=CONFIG.usuge.recheck;
   txt('recheckTitle', rc.title); txt('recheckText', rc.text);
   var rcc=document.getElementById('recheckCta'); rcc.textContent=rc.cta;
-  if(es.line && es.line.url && !ph(es.line.url)){ rcc.setAttribute('href', es.line.url); }
-  else { rcc.removeAttribute('target'); rcc.setAttribute('href','#shindan'); }
+  if(es.line && es.line.url && !ph(es.line.url)){ rcc.className='ctabtn line'; rcc.setAttribute('href', es.line.url); }
+  else { rcc.className='ctabtn main'; rcc.removeAttribute('target'); rcc.setAttribute('href','#formCard'); } /* LINE未設定時は再診断希望フォームへ誘導 */
 
   // hidden lead values（送信で営業/CRMへ渡る＝原因タイプ判定済みの見込み客）
   document.getElementById('hKarteNo').value=kn.no;
