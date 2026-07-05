@@ -15,6 +15,8 @@
 <title>薄毛の原因タイプ診断｜頭皮環境チェックとケアの方向｜からだのカルテ</title>
 <meta name="description" content="薄毛は原因が一つではありません。生活習慣・食事・頭皮・家族歴などから薄毛の原因を4タイプに分類し、頭皮/毛髪環境スコアと、あなたに合ったケアの方向をカルテとして無料発行。※傾向の目安で、医療診断ではありません。">
 <link rel="canonical" href="https://karada-carte.jp/usuge/">
+<!-- 写真スロット（差し替えは images.css の1ファイルだけ） -->
+<link rel="stylesheet" href="/images.css">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="からだのカルテ">
@@ -74,7 +76,7 @@
   header.site .navlink{color:#c3d2ca;text-decoration:none;font-size:13px}
 
   /* hero */
-  .hero{background:linear-gradient(158deg,#16302a 0%,#1E3A34 48%,#2E5249 100%);color:#fff;padding:54px 0 48px;position:relative;overflow:hidden}
+  .hero{background-image:linear-gradient(158deg,rgba(16,32,28,.93) 0%,rgba(27,42,52,.80) 55%,rgba(30,58,52,.72) 100%),var(--photo-hero);background-size:cover;background-position:center;color:#fff;padding:54px 0 48px;position:relative;overflow:hidden}
   .hero .wrap{display:grid;grid-template-columns:1.22fr .78fr;gap:28px;align-items:center;position:relative;z-index:2}
   @media(max-width:760px){.hero{padding:40px 0 36px}.hero .wrap{grid-template-columns:1fr;gap:16px}}
   .hero .eyebrow{color:#dCe6d1;font-size:12.5px;letter-spacing:.18em;font-weight:700;margin:0 0 15px;display:inline-flex;align-items:center;gap:9px}
@@ -273,6 +275,16 @@
   .faq details[open] summary::after{content:"－"}
   .faq .a{padding:0 4px 16px;color:var(--ink);font-size:14px;line-height:1.8}
 
+  /* ===== 写真バンド（フルブリード・シネマティック） ===== */
+  .photoband{position:relative;color:#fff;padding:70px 0;background-size:cover;background-position:center}
+  .photoband::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(18,32,28,.86),rgba(30,58,52,.52))}
+  .photoband .wrap{position:relative;z-index:1}
+  .pb-botanical{background-image:var(--photo-botanical)}
+  .pb-water{background-image:var(--photo-water)}
+  .pb-eyebrow{color:#e2ebd9;font-size:11.5px;letter-spacing:.2em;font-weight:700;margin:0 0 12px}
+  .pb-title{font-family:var(--serif);font-size:clamp(23px,4.8vw,36px);color:#fff;margin:0 0 12px;line-height:1.42;text-shadow:0 2px 18px rgba(0,0,0,.45)}
+  .pb-lead{color:#edf2ec;font-size:clamp(14px,2.2vw,16px);max-width:40em;margin:0;text-shadow:0 1px 12px rgba(0,0,0,.35)}
+
   footer.site{background:var(--pine);color:#c3d2ca;padding:28px 0;margin-top:8px;font-size:12.5px}
   footer.site a{color:#dCe6d1}
   footer .foot-discl{font-size:11.5px;color:#9db3a8;line-height:1.7;margin:12px 0 0}
@@ -283,7 +295,7 @@
 
   /* 印刷（カルテ票を紙で残す） */
   @media print{
-    header.site,.hero,.answer,#shindan .sec-sub,#shindan>.wrap>h2,#wizard,.formcard,.recheck,.offer,.resfoot,#method,#faq,footer.site,.navlink{display:none!important}
+    header.site,.hero,.answer,.photoband,#shindan .sec-sub,#shindan>.wrap>h2,#wizard,.formcard,.recheck,.offer,.resfoot,#method,#faq,footer.site,.navlink{display:none!important}
     body{background:#fff}
     .resultwrap{display:block!important}
     .karte{box-shadow:none;border:1px solid #999}
@@ -380,6 +392,15 @@
     <p id="directAnswer">読み込み中…</p>
   </div>
 </div>
+
+<!-- 写真バンド：原因はひとつじゃない（ノコギリヤシ等の植物由来＝自然の文脈） -->
+<section class="photoband pb-botanical">
+  <div class="wrap">
+    <p class="pb-eyebrow">CAUSE TYPE</p>
+    <p class="pb-title">薄毛の原因は、ひとつじゃない。</p>
+    <p class="pb-lead">ホルモン・加齢、頭皮環境、栄養やダメージ——。原因の傾向は人それぞれです。まず自分のタイプを知ることが、合ったケアの出発点になります。</p>
+  </div>
+</section>
 
 <!-- ===== 診断 ===== -->
 <section id="shindan">
@@ -522,6 +543,15 @@
   </div>
 </section>
 
+<!-- 写真バンド：毛周期＝続けて経過をみる（定期の必然性を事実の範囲で） -->
+<section class="photoband pb-water">
+  <div class="wrap">
+    <p class="pb-eyebrow">HAIR CYCLE</p>
+    <p class="pb-title">続けて、次の毛周期でたしかめる。</p>
+    <p class="pb-lead">毛周期は数ヶ月〜年単位。ケアの手ごたえは1回では分かりにくいため、一定期間続けて経過をみることが一般に大切とされています。※毛周期の一般的な考え方であり、効果を保証するものではありません。</p>
+  </div>
+</section>
+
 <!-- ===== 薄毛のしくみ・毛周期（GEO本文・HowTo と一致） ===== -->
 <section id="method">
   <div class="wrap">
@@ -552,7 +582,7 @@
   <div class="wrap">
     <div id="footBrand"></div>
     <p class="foot-discl" id="footDisclaimer"></p>
-    <p class="foot-discl">© <span class="num" id="year"></span> からだのカルテ ／ 本ページは薄毛の原因の傾向を知るための情報提供であり、医療診断・治療・効果を保証するものではありません。エスロッソ製品は健康補助食品または化粧品・医薬部外品の区分に応じた範囲でご案内しています。気になる症状は医療機関にご相談ください。</p>
+    <p class="foot-discl">© <span class="num" id="year"></span> artnap co.,ltd. ／ からだのカルテ（運営：アートナップ株式会社） ／ 本ページは薄毛の原因の傾向を知るための情報提供であり、医療診断・治療・効果を保証するものではありません。エスロッソ製品は健康補助食品または化粧品・医薬部外品の区分に応じた範囲でご案内しています。気になる症状は医療機関にご相談ください。</p>
   </div>
 </footer>
 
