@@ -1,1 +1,242 @@
-<h1>準備中</h1>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<!-- ===== セキュリティ（静的ホスティング用・web-security-baseline 準拠） ===== -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none';">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<!-- 公開前は noindex（母屋は準備中）。公開時に index,follow へ切替＝公開ボタン。 -->
+<meta name="robots" content="noindex, nofollow">
+
+<title>からだのカルテ｜健康・からだの悩みを「数値で診る」無料診断メディア</title>
+<meta name="description" content="薄毛・睡眠・栄養・疲れなど、からだの気になる悩みを、主治医のカルテのように数値で記録する無料診断メディア。まずは今の状態を目安で知り、続けて改善を確かめる。※医療診断ではありません。">
+<link rel="canonical" href="https://karada-carte.jp/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="からだのカルテ">
+<meta property="og:title" content="からだのカルテ｜健康・からだの悩みを「数値で診る」無料診断メディア">
+<meta property="og:description" content="からだの気になる悩みを、カルテのように数値で記録する無料診断メディア。まずは今の状態を目安で知る。">
+<meta property="og:url" content="https://karada-carte.jp/">
+<meta property="og:image" content="https://karada-carte.jp/assets/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- 構造化データ（母屋＝WebSite / Organization）。JS で org 名を config から補完。 -->
+<script type="application/ld+json" id="ld-website">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "からだのカルテ",
+  "url": "https://karada-carte.jp/",
+  "description": "健康・からだの悩みを数値で記録する無料診断メディア。",
+  "inLanguage": "ja"
+}
+</script>
+<script type="application/ld+json" id="ld-org"></script>
+
+<style>
+  :root{
+    --pine:#1E3A34; --pine-2:#2E5249; --ink:#22282A; --muted:#6B7069;
+    --paper:#FBFAF6; --paper-2:#F0EFE8; --line:#DEDCD1;
+    --seal:#BC4A34; --seal-2:#a23f2c; --herb:#7E9153;
+    --radius:12px;
+    --serif:"Yu Mincho","YuMincho","Hiragino Mincho ProN","Hiragino Mincho Pro",serif;
+    --sans:system-ui,-apple-system,"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif;
+    --num:Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;font-family:var(--sans);color:var(--ink);line-height:1.8;letter-spacing:.01em;font-size:16px;
+    background:
+      radial-gradient(1000px 460px at 88% -10%, rgba(126,145,83,.10), transparent 60%),
+      radial-gradient(720px 420px at -6% 2%, rgba(30,58,52,.06), transparent 58%),
+      /* カルテの方眼罫（極薄） */
+      linear-gradient(rgba(30,58,52,.045) 1px, transparent 1px) 0 0/100% 30px,
+      linear-gradient(90deg, rgba(30,58,52,.03) 1px, transparent 1px) 0 0/30px 100%,
+      var(--paper);
+    min-height:100vh;display:flex;flex-direction:column;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px;width:100%}
+  a{color:var(--pine-2)}
+  h1{font-family:var(--serif)}
+
+  /* header */
+  header{padding:22px 0}
+  .brand{display:flex;align-items:center;gap:13px;color:var(--pine);text-decoration:none}
+  .emblem{width:44px;height:44px;flex:0 0 auto;display:block}
+  .brand .mark{font-family:var(--serif);font-size:22px;letter-spacing:.06em;line-height:1.1;font-weight:700}
+  .brand .sub{font-size:11.5px;color:var(--muted);letter-spacing:.12em}
+
+  main{flex:1;padding:16px 0 56px}
+  .eyebrow{color:var(--pine);font-size:12px;letter-spacing:.2em;font-weight:700;margin:16px 0 16px;display:inline-flex;align-items:center;gap:10px}
+  .eyebrow::before{content:"";width:30px;height:1px;background:linear-gradient(90deg,transparent,var(--herb))}
+  h1{font-size:clamp(28px,6.2vw,46px);line-height:1.42;margin:0 0 20px;color:var(--pine);letter-spacing:.03em;font-weight:700}
+  h1 .nb{white-space:nowrap}
+  p.lead{color:#43494a;font-size:clamp(15px,2.3vw,16.5px);max-width:42em;margin:0 0 30px}
+
+  /* section rule */
+  .orn{display:flex;align-items:center;gap:14px;color:var(--herb);margin:12px 0 18px}
+  .orn .lbl{font-size:11.5px;letter-spacing:.18em;color:var(--pine);white-space:nowrap;font-weight:700}
+  .orn .ln{flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+
+  /* feature card（公開中の主役診断） */
+  .feature{display:flex;align-items:center;gap:20px;text-decoration:none;color:var(--ink);position:relative;overflow:hidden;
+    background:linear-gradient(120deg,#fff,#f7f8f3);
+    border:1px solid var(--line);border-left:4px solid var(--pine);border-radius:var(--radius);
+    padding:24px 26px;box-shadow:0 10px 30px rgba(30,58,52,.08);transition:transform .13s,box-shadow .15s,border-color .15s}
+  .feature:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(30,58,52,.12);border-left-color:var(--seal)}
+  .feature:focus-visible{outline:2px solid var(--pine);outline-offset:3px}
+  .feature .ic{width:60px;height:60px;flex:0 0 auto}
+  .feature .badge{position:absolute;top:0;right:0;background:var(--seal);color:#fff;
+    font-size:10.5px;font-weight:700;letter-spacing:.06em;padding:5px 13px;border-bottom-left-radius:11px}
+  .feature .t{font-family:var(--serif);font-size:clamp(19px,3.4vw,23px);margin:2px 0 5px;color:var(--pine);font-weight:700}
+  .feature .d{font-size:13.5px;color:#4d534f;margin:0 0 6px;line-height:1.7}
+  .feature .m{font-size:11.5px;color:var(--muted);margin:0}
+  .feature .arw{margin-left:auto;color:var(--seal);font-size:24px;flex:0 0 auto;align-self:center}
+  @media(max-width:560px){.feature{gap:15px;padding:22px 20px}.feature .ic{width:46px;height:46px}.feature .arw{display:none}}
+
+  /* tiles（これから広げる） */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:2px 0 0}
+  @media(max-width:720px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:430px){.grid{grid-template-columns:1fr}}
+  .tile{background:#fff;border:1px solid var(--line);border-radius:11px;padding:17px 17px 15px}
+  .tile .ic{width:30px;height:30px;margin-bottom:10px;display:block}
+  .tile .t{font-family:var(--serif);font-size:15.5px;color:var(--pine);margin:0 0 3px;font-weight:700}
+  .tile .d{font-size:12px;color:var(--muted);margin:0;line-height:1.6}
+  .tile .st{display:inline-block;margin-top:11px;font-size:10.5px;letter-spacing:.06em;color:var(--herb);
+    border:1px solid rgba(126,145,83,.45);border-radius:20px;padding:2px 10px}
+  .note{margin:24px 0 0;font-size:12.5px;color:var(--muted)}
+
+  footer{padding:22px 0;font-size:12px;color:var(--muted);border-top:1px solid var(--line)}
+  footer .num{font-family:var(--num);letter-spacing:.04em}
+</style>
+</head>
+<body>
+
+<!-- ===== インラインSVG 意匠（外部依存なし） ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- エンブレム：カルテ用紙＋脈波＋朱の記録印 -->
+    <symbol id="emblem" viewBox="0 0 100 100">
+      <rect x="24" y="14" width="52" height="72" rx="8" fill="none" stroke="#1E3A34" stroke-width="3"/>
+      <rect x="40" y="9" width="20" height="11" rx="4" fill="none" stroke="#1E3A34" stroke-width="3"/>
+      <polyline points="33,52 42,52 46,42 52,64 57,50 67,50" fill="none" stroke="#1E3A34" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="33" y1="70" x2="67" y2="70" stroke="#1E3A34" stroke-width="2.4" stroke-linecap="round"/>
+      <circle cx="66" cy="30" r="7.5" fill="#BC4A34"/>
+    </symbol>
+    <!-- 主役診断アイコン：カルテ票（診断書） -->
+    <symbol id="ic-carte" viewBox="0 0 64 64">
+      <rect x="12" y="8" width="40" height="48" rx="6" fill="#fff" stroke="#1E3A34" stroke-width="2.4"/>
+      <rect x="24" y="4.5" width="16" height="9" rx="3.5" fill="#fff" stroke="#1E3A34" stroke-width="2.4"/>
+      <line x1="19" y1="24" x2="45" y2="24" stroke="#DEDCD1" stroke-width="2"/>
+      <polyline points="19,36 25,36 28,29 33,45 37,33 45,33" fill="none" stroke="#2E5249" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="19" y1="48" x2="38" y2="48" stroke="#DEDCD1" stroke-width="2"/>
+      <circle cx="44" cy="47" r="6" fill="#BC4A34"/>
+    </symbol>
+    <!-- 領域アイコン（線画・pine） -->
+    <symbol id="ic-mineral" viewBox="0 0 24 24"><g stroke="#1E3A34" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 4v7c0 3.5-3 6-7 7-4-1-7-3.5-7-7V7z"/><path d="M9 12l2 2 4-4"/></g></symbol>
+    <symbol id="ic-sleep" viewBox="0 0 24 24"><g stroke="#1E3A34" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/><path d="M15 4h4l-4 4h4"/></g></symbol>
+    <symbol id="ic-fatigue" viewBox="0 0 24 24"><g stroke="#1E3A34" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13l4-1 2-6 3 12 2-5h5"/></g></symbol>
+    <symbol id="ic-gut" viewBox="0 0 24 24"><g stroke="#1E3A34" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v6a4 4 0 0 0 4 4h1a3 3 0 0 1 3 3v3"/><path d="M9 4v5a2 2 0 0 0 2 2h2a4 4 0 0 1 4 4v5"/></g></symbol>
+    <symbol id="ic-eye" viewBox="0 0 24 24"><g stroke="#1E3A34" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="2.6"/></g></symbol>
+    <symbol id="ic-cold" viewBox="0 0 24 24"><g stroke="#1E3A34" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M4.5 7.5l15 9M19.5 7.5l-15 9"/><path d="M12 6l-2.5-2M12 6l2.5-2M12 18l-2.5 2M12 18l2.5 2"/></g></symbol>
+  </defs>
+</svg>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="/">
+      <svg class="emblem" aria-hidden="true"><use href="#emblem"/></svg>
+      <span><span class="mark">からだのカルテ</span><br><span class="sub" id="brandSub">健康・からだの総合診断メディア</span></span>
+    </a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="eyebrow" id="eyebrow">からだの気になるを、数値で記録する</p>
+    <h1 id="homeTitle">気になるからだの悩みを、<br><span class="nb">カルテで診る。</span></h1>
+    <p class="lead" id="homeLead">読み込み中…</p>
+
+    <div class="orn"><span class="lbl" id="featureLabel">いま使える診断</span><span class="ln"></span></div>
+
+    <a class="feature" id="featureCard" href="/usuge/">
+      <span class="badge" id="featureBadge">公開中</span>
+      <svg class="ic" aria-hidden="true"><use href="#ic-carte"/></svg>
+      <span>
+        <p class="t" id="featureTitle">薄毛・頭皮環境チェック</p>
+        <p class="d" id="featureDesc"></p>
+        <p class="m" id="featureMeta"></p>
+      </span>
+      <span class="arw" aria-hidden="true">→</span>
+    </a>
+
+    <div class="orn"><span class="lbl" id="growLabel">これから広げていく診断</span><span class="ln"></span></div>
+    <div class="grid" id="tiles"></div>
+
+    <p class="note" id="homeNote"></p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">© <span class="num" id="year"></span> からだのカルテ ／ 本サイトは健康・からだに関する情報提供および傾向の目安を示すもので、医療診断・治療・効果を保証するものではありません。気になる症状がある場合は医療機関にご相談ください。</div>
+</footer>
+
+<script>
+(function(){
+  function txt(id,v){ var el=document.getElementById(id); if(el&&v!=null) el.textContent=v; }
+  fetch('config.json?t=' + Date.now())
+    .then(function(r){ if(!r.ok) throw new Error('config'); return r.json(); })
+    .then(function(c){
+      var h = c.home || {};
+      document.title = (h.meta && h.meta.title) || document.title;
+      txt('brandSub', c.site && c.site.sub);
+      if (h.hero){
+        txt('eyebrow', h.hero.eyebrow);
+        if (h.hero.titleLines && h.hero.titleLines.length){
+          document.getElementById('homeTitle').innerHTML =
+            h.hero.titleLines.map(function(l,i){ return i===h.hero.titleLines.length-1 ? '<span class="nb">'+l+'</span>' : l; }).join('<br>');
+        }
+        txt('homeLead', h.hero.lead);
+      }
+      txt('featureLabel', h.featureLabel);
+      txt('growLabel', h.growLabel);
+      txt('homeNote', h.note);
+      if (h.feature){
+        var fc=document.getElementById('featureCard'); if(h.feature.href) fc.setAttribute('href', h.feature.href);
+        txt('featureBadge', h.feature.badge);
+        txt('featureTitle', h.feature.title);
+        txt('featureDesc', h.feature.desc);
+        txt('featureMeta', h.feature.meta);
+      }
+      // tiles
+      var box=document.getElementById('tiles'); box.innerHTML='';
+      (h.tiles||[]).forEach(function(t){
+        var d=document.createElement('div'); d.className='tile';
+        d.innerHTML='<svg class="ic" aria-hidden="true"><use href="#'+(t.icon||'ic-mineral')+'"/></svg>'+
+          '<p class="t">'+t.title+'</p><p class="d">'+t.desc+'</p><span class="st">'+(t.status||'準備中')+'</span>';
+        box.appendChild(d);
+      });
+      // Organization JSON-LD（本文と一致する org 情報）
+      if (h.org){
+        var org={ "@context":"https://schema.org","@type":"Organization",
+          "name":h.org.name||"からだのカルテ","url":h.org.url||"https://karada-carte.jp/",
+          "description":h.org.description||"" };
+        if (h.org.legalName && h.org.legalName.indexOf('__')!==0) org.legalName=h.org.legalName;
+        document.getElementById('ld-org').textContent=JSON.stringify(org);
+      }
+    })
+    .catch(function(e){
+      document.getElementById('homeLead').textContent='設定ファイルの読み込みに失敗しました。時間をおいて再度お試しください。';
+      console.error(e);
+    });
+  document.getElementById('year').textContent=String(new Date().getFullYear());
+})();
+// frame-busting（クリックジャッキング対策）
+try{ if(window.top!==window.self){ window.top.location=window.self.location; } }catch(e){ document.documentElement.style.display='none'; }
+</script>
+</body>
+</html>

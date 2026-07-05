@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<!-- ===== セキュリティ（静的ホスティング用・web-security-baseline 準拠） =====
+     既定は自サイトのみ。Turnstile と GAS 送信先だけ明示許可。 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com; form-action 'self' https://script.google.com; frame-ancestors 'none';">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<!-- 公開前は noindex。公開時に index,follow へ切替＝公開ボタン。 -->
+<meta name="robots" content="noindex, nofollow">
+
+<title>薄毛の原因タイプ診断｜頭皮環境チェックとケアの方向｜からだのカルテ</title>
+<meta name="description" content="薄毛は原因が一つではありません。生活習慣・食事・頭皮・家族歴などから薄毛の原因を4タイプに分類し、頭皮/毛髪環境スコアと、あなたに合ったケアの方向をカルテとして無料発行。※傾向の目安で、医療診断ではありません。">
+<link rel="canonical" href="https://karada-carte.jp/usuge/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="からだのカルテ">
+<meta property="og:title" content="薄毛の原因タイプ診断｜頭皮環境チェックとケアの方向">
+<meta property="og:description" content="薄毛の原因を4タイプに分類し、頭皮/毛髪環境スコアとケアの方向をカルテとして無料発行。">
+<meta property="og:url" content="https://karada-carte.jp/usuge/">
+<meta property="og:image" content="https://karada-carte.jp/usuge/assets/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- 構造化データ（本文と一致・フェイクschema禁止）。FAQ/HowTo は config 由来で本文にも可視表示。 -->
+<script type="application/ld+json" id="ld-webapp">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "薄毛の原因タイプ診断（からだのカルテ）",
+  "url": "https://karada-carte.jp/usuge/",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+  "description": "生活習慣・食事・頭皮・家族歴から薄毛の原因を4タイプに分類し、頭皮/毛髪環境スコアの目安を発行するブラウザ内チェック。医療診断ではありません。"
+}
+</script>
+<script type="application/ld+json" id="ld-faq"></script>
+<script type="application/ld+json" id="ld-howto"></script>
+
+<style>
+  :root{
+    --pine:#1E3A34; --pine-2:#2E5249; --ink:#22282A; --muted:#6B7069;
+    --paper:#FBFAF6; --paper-2:#F0EFE8; --line:#DEDCD1; --line-2:#E7E5DB;
+    --seal:#BC4A34; --seal-2:#a23f2c; --herb:#7E9153; --herb-2:#647543;
+    --ok:#2F6B4F; --danger:#B0432F;
+    --radius:12px;
+    --serif:"Yu Mincho","YuMincho","Hiragino Mincho ProN","Hiragino Mincho Pro",serif;
+    --sans:system-ui,-apple-system,"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif;
+    --num:Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--paper);line-height:1.78;font-size:16px;letter-spacing:.01em}
+  .wrap{max-width:860px;margin:0 auto;padding:0 20px}
+  h1,h2,h3{font-family:var(--serif);font-weight:700;line-height:1.42;color:var(--pine);letter-spacing:.02em}
+  a{color:var(--pine-2)}
+  .small{font-size:13px;color:var(--muted);line-height:1.7}
+  .center{text-align:center}
+  .num{font-family:var(--num);font-variant-numeric:tabular-nums}
+  .skip{position:absolute;left:-9999px}
+  .skip:focus{left:8px;top:8px;position:fixed;z-index:99;background:#fff;padding:8px 12px;border:2px solid var(--pine);border-radius:8px}
+
+  /* header */
+  header.site{background:var(--pine);color:#fff}
+  header.site .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .brand{display:flex;align-items:center;gap:11px;color:#fff;text-decoration:none}
+  .brand .emblem{width:34px;height:34px;flex:0 0 auto}
+  .brand .txt{display:flex;flex-direction:column;line-height:1.15}
+  .brand .mark{font-family:var(--serif);font-size:18px;font-weight:700;letter-spacing:.05em}
+  .brand .sub{font-size:11px;color:#c3d2ca;letter-spacing:.04em}
+  header.site .navlink{color:#c3d2ca;text-decoration:none;font-size:13px}
+
+  /* hero */
+  .hero{background:linear-gradient(158deg,#16302a 0%,#1E3A34 48%,#2E5249 100%);color:#fff;padding:54px 0 48px;position:relative;overflow:hidden}
+  .hero .wrap{display:grid;grid-template-columns:1.22fr .78fr;gap:28px;align-items:center;position:relative;z-index:2}
+  @media(max-width:760px){.hero{padding:40px 0 36px}.hero .wrap{grid-template-columns:1fr;gap:16px}}
+  .hero .eyebrow{color:#dCe6d1;font-size:12.5px;letter-spacing:.18em;font-weight:700;margin:0 0 15px;display:inline-flex;align-items:center;gap:9px}
+  .hero .eyebrow::before{content:"";width:26px;height:1px;background:linear-gradient(90deg,transparent,var(--herb))}
+  .hero h1{color:#fff;font-size:clamp(27px,5.2vw,42px);margin:0 0 18px;line-height:1.4}
+  .hero h1 .nb{white-space:nowrap}
+  .hero h1 .accent{color:#eBdCae}
+  .hero p.lead{color:#e4ede4;font-size:clamp(14.5px,2.3vw,16.5px);margin:0 0 24px;max-width:40em}
+  .hero .cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--seal);color:#fff;
+    font-weight:700;text-decoration:none;padding:16px 30px;border-radius:9px;font-size:16px;min-height:54px;box-shadow:0 12px 28px rgba(0,0,0,.28)}
+  .hero .cta::after{content:"→";font-weight:700}
+  .hero .cta:active{transform:translateY(1px)}
+  .hero .cta:focus-visible{outline:2px solid #fff;outline-offset:2px}
+  .hero .metaline{color:#aec3b8;font-size:12px;margin-top:14px}
+  .hero-art{justify-self:center;width:100%;max-width:340px}
+  @media(max-width:760px){.hero-art{max-width:280px;order:2}}
+  .hero-illust{width:100%;height:auto;display:block;filter:drop-shadow(0 16px 26px rgba(0,0,0,.28))}
+
+  /* GEO 直接回答 */
+  .answer{background:#fff;border:1px solid var(--line);border-left:4px solid var(--seal);border-radius:var(--radius);padding:20px 22px;margin:26px 0}
+  .answer .k{font-size:12px;letter-spacing:.1em;color:var(--seal-2);font-weight:700;margin:0 0 8px}
+  .answer p{margin:0;font-size:14.5px;color:var(--ink)}
+
+  section{padding:32px 0}
+  section h2{font-size:clamp(20px,3.6vw,26px);margin:0 0 6px;position:relative;padding-left:15px}
+  section h2::before{content:"";position:absolute;left:0;top:.18em;bottom:.18em;width:3px;border-radius:2px;background:linear-gradient(180deg,var(--herb),var(--pine))}
+  .sec-sub{color:var(--muted);font-size:14px;margin:0 0 22px}
+
+  /* card / wizard */
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 8px 26px rgba(30,58,52,.07)}
+  .card-pad{padding:24px}
+  @media(min-width:640px){.card-pad{padding:30px 34px}}
+  #wizard{position:relative;overflow:hidden}
+  #wizard::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--herb),var(--pine) 60%,var(--seal))}
+
+  .stepbar{display:flex;gap:6px;margin:4px 0 20px}
+  .stepbar .seg{flex:1;height:5px;border-radius:3px;background:var(--line)}
+  .stepbar .seg.on{background:var(--seal)}
+  .stepbar .seg.done{background:var(--pine)}
+  .steplabel{font-size:12px;color:var(--muted);letter-spacing:.06em;margin:0 0 4px}
+  .step > h3{font-size:19px;margin:0 0 6px}
+  .step .hint{color:var(--muted);font-size:13.5px;margin:0 0 18px}
+
+  .q{border:0;padding:0;margin:0 0 20px}
+  .q .ql{font-size:14.5px;font-weight:700;color:var(--ink);margin:0 0 10px;padding:0}
+  .opts{display:grid;gap:9px}
+  .opts.two{grid-template-columns:1fr 1fr}
+  @media(max-width:420px){.opts.two{grid-template-columns:1fr}}
+  .opt{display:flex;align-items:center;gap:11px;border:1.5px solid var(--line);border-radius:9px;padding:13px 15px;cursor:pointer;
+    background:#fff;transition:border-color .12s,background .12s;min-height:50px}
+  .opt:hover{border-color:var(--herb);background:#f8faf4}
+  .opt.sel{border-color:var(--pine);background:#f2f6f1;box-shadow:inset 0 0 0 1px rgba(30,58,52,.28)}
+  .opt input{accent-color:var(--pine);width:18px;height:18px;flex:0 0 auto}
+  .opt:focus-within{outline:2px solid var(--pine);outline-offset:1px}
+  .opt .t{font-size:14.5px}
+
+  .nav{display:flex;justify-content:space-between;gap:12px;margin-top:22px}
+  .btn{appearance:none;border:0;border-radius:9px;font-weight:700;font-size:15px;padding:14px 22px;min-height:52px;cursor:pointer;font-family:var(--sans)}
+  .btn.primary{background:var(--pine);color:#fff}
+  .btn.primary:disabled{opacity:.38;cursor:not-allowed}
+  .btn.seal{background:var(--seal);color:#fff}
+  .btn.ghost{background:#fff;color:var(--pine);border:1.5px solid var(--line)}
+  .btn:active{transform:translateY(1px)}
+  .btn:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+  .err{color:var(--danger);font-size:13px;margin-top:8px;min-height:18px}
+  .notice{background:#f4f1e6;border:1px solid #e6dfc9;border-radius:9px;padding:13px 15px;font-size:12.5px;color:#5a5330;line-height:1.65}
+
+  /* ===== 結果＝カルテ票（シグネチャー） ===== */
+  .resultwrap{display:none}
+  .karte{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 14px 40px rgba(30,58,52,.12);position:relative}
+  .karte::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(rgba(30,58,52,.028) 1px,transparent 1px) 0 44px/100% 26px;opacity:.9}
+  .karte-top{background:var(--pine);color:#fff;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .karte-top .tt{display:flex;align-items:center;gap:11px}
+  .karte-top .emblem{width:30px;height:30px}
+  .karte-top .lab{font-family:var(--serif);font-size:15px;letter-spacing:.06em}
+  .karte-top .lab small{display:block;font-family:var(--sans);font-size:10.5px;color:#bcd0c6;letter-spacing:.14em;font-weight:400}
+  .karte-top .meta{text-align:right;font-size:11px;color:#c3d2ca;line-height:1.5}
+  .karte-top .meta .num{font-size:12.5px;color:#eBdCae}
+  .karte-body{padding:24px 22px}
+  @media(min-width:640px){.karte-body{padding:28px 30px}}
+
+  /* score gauge */
+  .score{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .score .big{font-family:var(--num);font-size:clamp(46px,13vw,72px);font-weight:700;color:var(--pine);line-height:.9}
+  .score .big .u{font-size:.34em;color:var(--muted);margin-left:4px;font-family:var(--sans)}
+  .score .lab{flex:1;min-width:180px}
+  .score .lab .cap{font-size:12.5px;color:var(--muted);letter-spacing:.04em;margin:0 0 8px}
+  .track{height:12px;border-radius:8px;background:var(--paper-2);border:1px solid var(--line);position:relative;overflow:hidden}
+  .track .fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:8px;background:linear-gradient(90deg,var(--herb),var(--pine));transition:width 1.1s cubic-bezier(.2,.7,.2,1)}
+  .track .mk{position:absolute;top:-4px;width:3px;height:20px;background:var(--seal);border-radius:2px;transition:left 1.1s cubic-bezier(.2,.7,.2,1)}
+  .scscale{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);margin-top:6px}
+  .prevdelta{font-size:12.5px;color:var(--pine-2);margin-top:9px}
+  .prevdelta b{color:var(--seal-2)}
+
+  /* type + 朱印 */
+  .typebox{display:flex;align-items:center;gap:18px;margin:22px 0 0;padding:18px 0 0;border-top:1px solid var(--line);flex-wrap:wrap}
+  .seal-stamp{flex:0 0 auto;width:88px;height:88px;border-radius:50%;border:2.5px solid var(--seal);color:var(--seal);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+    font-family:var(--serif);transform:rotate(-8deg);box-shadow:0 0 0 3px rgba(188,74,52,.12) inset}
+  .seal-stamp .sl{font-size:9px;letter-spacing:.1em;opacity:.85}
+  .seal-stamp .st{font-size:16px;font-weight:700;line-height:1.2;margin-top:2px}
+  .seal-anim{animation:stamp .5s cubic-bezier(.2,.9,.3,1.2) both}
+  @keyframes stamp{0%{opacity:0;transform:rotate(-8deg) scale(1.5)}60%{opacity:1}100%{opacity:1;transform:rotate(-8deg) scale(1)}}
+  .typebox .ti{flex:1;min-width:200px}
+  .typebox .tk{font-size:12px;color:var(--muted);letter-spacing:.06em;margin:0 0 2px}
+  .typebox .tn{font-family:var(--serif);font-size:clamp(21px,4.4vw,27px);color:var(--pine);font-weight:700;margin:0}
+  .typebox .ts{font-size:13px;color:var(--pine-2);margin:4px 0 0}
+
+  /* axis bars */
+  .axes{margin:22px 0 0}
+  .axes .ah{font-size:12.5px;color:var(--muted);letter-spacing:.04em;margin:0 0 12px}
+  .axis{display:grid;grid-template-columns:132px 1fr 40px;align-items:center;gap:10px;margin:0 0 9px;font-size:12.5px}
+  @media(max-width:480px){.axis{grid-template-columns:104px 1fr 36px}}
+  .axis .an{color:var(--ink)}
+  .axis .at{height:9px;border-radius:6px;background:var(--paper-2);border:1px solid var(--line);overflow:hidden}
+  .axis .af{height:100%;width:0;background:var(--pine);border-radius:6px;transition:width .9s ease}
+  .axis.dom .af{background:var(--seal)}
+  .axis .av{text-align:right;color:var(--muted);font-family:var(--num)}
+
+  /* finding / hairCycle / approach blocks */
+  .kbox{border:1px solid var(--line);border-radius:11px;padding:16px 18px;margin:22px 0 0;background:#fdfdfb}
+  .kbox .kt{font-family:var(--serif);font-size:15px;color:var(--pine);margin:0 0 7px;font-weight:700;display:flex;align-items:center;gap:8px}
+  .kbox .kt::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--seal);flex:0 0 auto}
+  .kbox p{margin:0;font-size:13.5px;color:#3f453f}
+  .kbox .kn{margin-top:8px;font-size:11.5px;color:var(--muted)}
+  .cycle{background:linear-gradient(180deg,#f3f6f1,#eef3ec);border-color:#dfe7d8}
+
+  /* products */
+  .prod{border:1px solid var(--line);border-radius:11px;padding:16px 18px;margin:12px 0 0;background:#fff;display:flex;gap:14px;align-items:flex-start}
+  .prod .pi{flex:0 0 auto;width:40px;height:40px;border-radius:9px;background:var(--paper-2);display:flex;align-items:center;justify-content:center}
+  .prod .pi svg{width:24px;height:24px}
+  .prod .pn{font-family:var(--serif);font-size:15.5px;color:var(--pine);font-weight:700;margin:0 0 2px}
+  .prod .pcat{display:inline-block;font-size:10.5px;color:var(--herb-2);border:1px solid rgba(126,145,83,.4);border-radius:20px;padding:1px 9px;margin:0 0 6px}
+  .prod .pd{font-size:12.5px;color:#4a504a;margin:0}
+  .prod .pnote{font-size:11px;color:var(--muted);margin:6px 0 0}
+
+  /* offer + CTA */
+  .offer{background:linear-gradient(180deg,#1E3A34,#16302a);color:#fff;border-radius:12px;padding:22px 22px;margin:22px 0 0;position:relative;overflow:hidden}
+  .offer h3{color:#fff;font-size:19px;margin:0 0 8px}
+  .offer p{color:#dCe6d1;font-size:13.5px;margin:0 0 6px}
+  .guarantee{display:inline-flex;align-items:center;gap:8px;background:rgba(235,220,174,.16);border:1px solid rgba(235,220,174,.4);color:#f3e7c6;
+    font-size:12.5px;font-weight:700;padding:7px 13px;border-radius:20px;margin:6px 0 14px}
+  .ctas{display:flex;flex-direction:column;gap:10px}
+  .ctabtn{display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-weight:700;padding:15px 18px;border-radius:10px;min-height:52px;font-size:15px}
+  .ctabtn.main{background:var(--seal);color:#fff}
+  .ctabtn.line{background:#06C755;color:#fff}
+  .ctabtn.ghost{background:transparent;color:#eBdCae;border:1.5px solid rgba(235,220,174,.5)}
+  .ctabtn:focus-visible{outline:2px solid #fff;outline-offset:2px}
+
+  .disclaimer-box{border:1px solid #e6c9bf;background:#fbf1ee;border-radius:11px;padding:15px 17px;font-size:12.5px;color:#6a3b2c;line-height:1.72;margin:22px 0 0}
+  .disclaimer-box strong{color:var(--danger)}
+
+  /* recheck */
+  .recheck{border:1px dashed var(--herb);border-radius:11px;padding:16px 18px;margin:22px 0 0;background:#f7faf3}
+  .recheck h3{font-size:16px;margin:0 0 6px;color:var(--pine)}
+  .recheck p{font-size:13px;color:#454b45;margin:0 0 12px}
+
+  /* form */
+  .formcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px;margin:22px 0 0}
+  .formcard h3{font-size:18px;margin:0 0 6px}
+  .field{margin:0 0 15px}
+  .field label{display:block;font-size:14px;font-weight:700;color:var(--ink);margin:0 0 6px}
+  input[type=text],input[type=email],input[type=tel],textarea{width:100%;font-size:16px;padding:13px 14px;border:1.5px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);min-height:50px;font-family:var(--sans)}
+  textarea{min-height:92px;resize:vertical}
+  input:focus,textarea:focus{outline:2px solid var(--pine);outline-offset:1px}
+  .purposes{display:grid;gap:8px;margin:0 0 6px}
+  .pchk{display:flex;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:9px;padding:11px 14px;cursor:pointer;font-size:14px;min-height:48px}
+  .pchk input{width:19px;height:19px;accent-color:var(--pine);flex:0 0 auto}
+  .pchk.sel{border-color:var(--pine);background:#f2f6f1}
+  .grid2{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+  @media(max-width:520px){.grid2{grid-template-columns:1fr}}
+  .hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden}
+  #turnstile-holder{margin:6px 0 4px}
+  .consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink);margin:6px 0 14px}
+  .consent input{width:20px;height:20px;margin-top:1px;accent-color:var(--pine)}
+  .thanks{display:none;text-align:center;padding:14px 0}
+  .thanks .chk{width:56px;height:56px;border-radius:50%;background:#eef3ec;color:var(--ok);display:inline-flex;align-items:center;justify-content:center;font-size:28px;margin:0 0 10px}
+
+  .resfoot{display:flex;gap:12px;justify-content:center;margin:22px 0 0;flex-wrap:wrap}
+
+  /* method / faq */
+  #method{background:linear-gradient(180deg,#f3f6f1,#eef3ec);border-top:1px solid #e0e8d9;border-bottom:1px solid #e0e8d9}
+  .cyclefig{display:flex;gap:8px;justify-content:center;margin:16px 0;flex-wrap:wrap}
+  .cyphase{flex:1;min-width:120px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:13px 14px;text-align:center}
+  .cyphase .cn{font-family:var(--serif);color:var(--pine);font-size:15px;font-weight:700;margin:0 0 3px}
+  .cyphase .cd{font-size:11.5px;color:var(--muted);margin:0}
+  .cyphase .ca{display:block;font-size:18px;color:var(--herb);margin:6px 0 0}
+  .steps-ol{counter-reset:s;list-style:none;padding:0;margin:12px 0 0}
+  .steps-ol li{counter-increment:s;position:relative;padding:0 0 14px 44px;color:var(--ink);font-size:14px}
+  .steps-ol li::before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;background:var(--pine);color:#fff;font-family:var(--num);font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
+  .faq details{border-bottom:1px solid var(--line);padding:4px 0}
+  .faq summary{cursor:pointer;list-style:none;padding:15px 30px 15px 4px;font-weight:700;color:var(--pine);font-size:15px;position:relative}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"＋";position:absolute;right:6px;top:14px;color:var(--seal);font-weight:700}
+  .faq details[open] summary::after{content:"－"}
+  .faq .a{padding:0 4px 16px;color:var(--ink);font-size:14px;line-height:1.8}
+
+  footer.site{background:var(--pine);color:#c3d2ca;padding:28px 0;margin-top:8px;font-size:12.5px}
+  footer.site a{color:#dCe6d1}
+  footer .foot-discl{font-size:11.5px;color:#9db3a8;line-height:1.7;margin:12px 0 0}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  }
+
+  /* 印刷（カルテ票を紙で残す） */
+  @media print{
+    header.site,.hero,.answer,#shindan .sec-sub,#shindan>.wrap>h2,#wizard,.formcard,.recheck,.offer,.resfoot,#method,#faq,footer.site,.navlink{display:none!important}
+    body{background:#fff}
+    .resultwrap{display:block!important}
+    .karte{box-shadow:none;border:1px solid #999}
+    .karte::after{display:none}
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#shindan">診断へスキップ</a>
+
+<!-- ===== インラインSVG 意匠 ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="emblem" viewBox="0 0 100 100">
+      <rect x="24" y="14" width="52" height="72" rx="8" fill="none" stroke="#fff" stroke-width="3"/>
+      <rect x="40" y="9" width="20" height="11" rx="4" fill="none" stroke="#fff" stroke-width="3"/>
+      <polyline points="33,52 42,52 46,42 52,64 57,50 67,50" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="33" y1="70" x2="67" y2="70" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+      <circle cx="66" cy="30" r="7.5" fill="#BC4A34"/>
+    </symbol>
+    <symbol id="emblem-pine" viewBox="0 0 100 100">
+      <rect x="24" y="14" width="52" height="72" rx="8" fill="none" stroke="#1E3A34" stroke-width="3"/>
+      <rect x="40" y="9" width="20" height="11" rx="4" fill="none" stroke="#1E3A34" stroke-width="3"/>
+      <polyline points="33,52 42,52 46,42 52,64 57,50 67,50" fill="none" stroke="#1E3A34" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="33" y1="70" x2="67" y2="70" stroke="#1E3A34" stroke-width="2.4" stroke-linecap="round"/>
+      <circle cx="66" cy="30" r="7.5" fill="#BC4A34"/>
+    </symbol>
+    <symbol id="ic-pill" viewBox="0 0 24 24"><g stroke="#1E3A34" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="8" rx="4"/><line x1="12" y1="8" x2="12" y2="16"/></g></symbol>
+    <symbol id="ic-bottle" viewBox="0 0 24 24"><g stroke="#1E3A34" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v3l1 2v12a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V8l1-2z"/><line x1="8" y1="12" x2="16" y2="12"/></g></symbol>
+    <symbol id="ic-drop" viewBox="0 0 24 24"><g stroke="#1E3A34" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/></g></symbol>
+    <symbol id="ic-leaf" viewBox="0 0 24 24"><g stroke="#1E3A34" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20c0-8 6-14 16-15C19 13 13 20 4 20z"/><path d="M4 20c4-5 8-8 12-9"/></g></symbol>
+  </defs>
+</svg>
+
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="../">
+      <svg class="emblem" aria-hidden="true"><use href="#emblem"/></svg>
+      <span class="txt"><span class="mark" id="brandMark">からだのカルテ</span><span class="sub" id="brandSub">薄毛・頭皮環境チェック</span></span>
+    </a>
+    <a class="navlink" href="#method">薄毛のしくみ</a>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="wrap">
+    <div class="hero-copy">
+      <p class="eyebrow" id="heroEyebrow">薄毛が気になり始めた方へ</p>
+      <h1 id="heroTitle">その薄毛は、<br><span class="nb accent">どのタイプ？</span></h1>
+      <p class="lead" id="heroLead"></p>
+      <a class="cta" href="#shindan" id="heroCta">無料でカルテを発行する（約1分）</a>
+      <p class="metaline" id="heroMeta"></p>
+    </div>
+    <div class="hero-art">
+      <!-- ヒーロー図版：発行される「頭皮・毛髪環境カルテ」（線画SVG・外部画像なし） -->
+      <svg class="hero-illust" viewBox="0 0 340 320" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="18" y="30" width="304" height="252" rx="18" fill="rgba(255,255,255,.045)" stroke="rgba(235,220,174,.28)"/>
+        <g transform="rotate(-4 170 156)">
+          <rect x="62" y="52" width="196" height="200" rx="12" fill="#fbf6ec" stroke="#dCc79a" stroke-width="1.6"/>
+          <path d="M62 64 a12 12 0 0 1 12-12 h172 a12 12 0 0 1 12 12 v22 H62 Z" fill="#1E3A34"/>
+          <text x="80" y="79" font-family="'Yu Mincho',serif" font-size="12" fill="#eBdCae" letter-spacing="1.5">頭皮・毛髪環境カルテ</text>
+          <circle cx="72" cy="70" r="3" fill="#eBdCae"/>
+          <!-- score gauge -->
+          <text x="80" y="108" font-family="sans-serif" font-size="8.5" fill="#8a9184" letter-spacing="1">ENVIRONMENT SCORE（目安）</text>
+          <text x="80" y="140" font-family="Georgia,serif" font-size="34" fill="#1E3A34" font-weight="700">68</text>
+          <rect x="150" y="120" width="88" height="10" rx="5" fill="#e9e0cf"/>
+          <rect x="150" y="120" width="60" height="10" rx="5" fill="#2E5249"/>
+          <rect x="208" y="116" width="3" height="18" rx="1.5" fill="#BC4A34"/>
+          <!-- axis bars -->
+          <g font-family="sans-serif" font-size="7.5" fill="#6B7069">
+            <text x="80" y="162">内的要因</text><rect x="140" y="156" width="98" height="6" rx="3" fill="#eee6d6"/><rect x="140" y="156" width="70" height="6" rx="3" fill="#BC4A34"/>
+            <text x="80" y="180">頭皮環境</text><rect x="140" y="174" width="98" height="6" rx="3" fill="#eee6d6"/><rect x="140" y="174" width="40" height="6" rx="3" fill="#2E5249"/>
+            <text x="80" y="198">栄養</text><rect x="140" y="192" width="98" height="6" rx="3" fill="#eee6d6"/><rect x="140" y="192" width="30" height="6" rx="3" fill="#2E5249"/>
+          </g>
+          <line x1="80" y1="214" x2="238" y2="214" stroke="#e9e0cf"/>
+          <text x="80" y="232" font-family="'Yu Mincho',serif" font-size="10" fill="#3f453f">所見：内的要因型の傾向</text>
+        </g>
+        <!-- 朱印 -->
+        <g transform="translate(268 66) rotate(-10)">
+          <circle r="30" fill="rgba(188,74,52,.1)" stroke="#BC4A34" stroke-width="2"/>
+          <text y="-4" text-anchor="middle" font-family="'Yu Mincho',serif" font-size="8" fill="#BC4A34">診断</text>
+          <text y="9" text-anchor="middle" font-family="'Yu Mincho',serif" font-size="10" fill="#BC4A34" font-weight="700">タイプ</text>
+        </g>
+        <g fill="#eBdCae"><circle cx="300" cy="200" r="2.4"/><circle cx="26" cy="120" r="1.8"/></g>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="answer" id="answerBlock">
+    <p class="k">結論から：薄毛の原因タイプと見分け方</p>
+    <p id="directAnswer">読み込み中…</p>
+  </div>
+</div>
+
+<!-- ===== 診断 ===== -->
+<section id="shindan">
+  <div class="wrap">
+    <h2>薄毛・頭皮環境チェック</h2>
+    <p class="sec-sub">かんたんな質問に答えるだけ。約1分でカルテを発行します。</p>
+
+    <div class="card card-pad" id="wizard">
+      <div class="stepbar" id="stepbar" aria-hidden="true"></div>
+      <div id="steps"></div>
+      <div class="nav">
+        <button class="btn ghost" id="btnBack" type="button" style="visibility:hidden">戻る</button>
+        <button class="btn primary" id="btnNext" type="button" disabled>次へ</button>
+      </div>
+    </div>
+
+    <!-- ===== 結果＝カルテ票 ===== -->
+    <div class="resultwrap" id="resultwrap">
+      <div class="karte" id="karte">
+        <div class="karte-top">
+          <div class="tt">
+            <svg class="emblem" aria-hidden="true"><use href="#emblem"/></svg>
+            <span class="lab">頭皮・毛髪環境カルテ<small>KARADA CARTE ／ SCALP &amp; HAIR</small></span>
+          </div>
+          <div class="meta">
+            <div>カルテ番号 <span class="num" id="karteNo">—</span></div>
+            <div>発行日 <span class="num" id="karteDate">—</span></div>
+          </div>
+        </div>
+        <div class="karte-body">
+          <div class="score">
+            <div class="big"><span id="scoreVal" class="num">–</span><span class="u">/100</span></div>
+            <div class="lab">
+              <p class="cap">頭皮/毛髪環境スコア（傾向の目安）</p>
+              <div class="track"><div class="fill" id="scoreFill"></div><div class="mk" id="scoreMk"></div></div>
+              <div class="scscale"><span>気になる点が多め</span><span>健やかな傾向</span></div>
+              <p class="prevdelta" id="prevDelta" style="display:none"></p>
+            </div>
+          </div>
+
+          <div class="typebox">
+            <div class="seal-stamp" id="sealStamp"><span class="sl">原因タイプ</span><span class="st" id="sealText">—</span></div>
+            <div class="ti">
+              <p class="tk">あなたの薄毛の原因タイプ（傾向）</p>
+              <p class="tn" id="typeName">—</p>
+              <p class="ts" id="typeSub"></p>
+            </div>
+          </div>
+
+          <div class="axes">
+            <p class="ah">原因の傾向（軸別の気になり度・目安）</p>
+            <div id="axisBars"></div>
+          </div>
+
+          <div class="kbox">
+            <p class="kt">主治医からの所見（傾向の目安）</p>
+            <p id="findingText"></p>
+          </div>
+
+          <div class="kbox cycle">
+            <p class="kt" id="cycleTitle">毛周期（ヘアサイクル）の観点</p>
+            <p id="cycleText"></p>
+            <p class="kn" id="cycleNote"></p>
+          </div>
+
+          <div class="kbox">
+            <p class="kt">あなたのタイプに必要なケアの方向</p>
+            <p id="approachText"></p>
+            <div id="products"></div>
+          </div>
+
+          <div class="disclaimer-box" id="resultDisclaimer"></div>
+        </div>
+      </div>
+
+      <!-- オファー＋Esrosso 導線 -->
+      <div class="offer">
+        <h3 id="offerTitle">あなたのタイプに合わせた、はじめの一歩</h3>
+        <p id="offerLead"></p>
+        <span class="guarantee" id="guaranteeBadge">◎ 全額返金保証</span>
+        <div class="ctas" id="offerCtas"></div>
+      </div>
+
+      <!-- 再診断（LTV再エンゲージ） -->
+      <div class="recheck">
+        <h3 id="recheckTitle">数ヶ月後に、もう一度カルテを。</h3>
+        <p id="recheckText"></p>
+        <a class="ctabtn line" id="recheckCta" href="#" target="_blank" rel="noopener">LINEで経過チェックを受け取る</a>
+      </div>
+
+      <!-- 相談/資料/再診断フォーム（離脱ゼロ＝この画面内） -->
+      <div class="formcard" id="formCard">
+        <h3 id="formTitle"></h3>
+        <p class="small" id="formBody" style="margin:0 0 16px"></p>
+        <form id="leadForm" autocomplete="on" novalidate>
+          <div class="hp" aria-hidden="true"><label>空欄のまま<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+
+          <div class="field">
+            <label id="lPurpose">ご希望（複数選択可）</label>
+            <div class="purposes" id="purposes"></div>
+          </div>
+          <div class="field"><label for="fName" id="lName">お名前</label><input type="text" id="fName" name="name" maxlength="60" required></div>
+          <div class="grid2">
+            <div class="field"><label for="fEmail" id="lEmail">メールアドレス</label><input type="email" id="fEmail" name="email" maxlength="120" required></div>
+            <div class="field"><label for="fTel" id="lTel">電話番号（任意）</label><input type="tel" id="fTel" name="tel" maxlength="30"></div>
+          </div>
+          <div class="field"><label for="fMsg" id="lMsg">ご相談内容（任意）</label><textarea id="fMsg" name="message" maxlength="1000"></textarea></div>
+
+          <div id="turnstile-holder"></div>
+          <label class="consent"><input type="checkbox" id="fConsent" required><span id="consentLabel"></span></label>
+
+          <input type="hidden" name="karteNo" id="hKarteNo">
+          <input type="hidden" name="causeType" id="hType">
+          <input type="hidden" name="score" id="hScore">
+          <input type="hidden" name="axisInternal" id="hAxInternal">
+          <input type="hidden" name="axisScalp" id="hAxScalp">
+          <input type="hidden" name="axisNutrition" id="hAxNutrition">
+          <input type="hidden" name="axisLifestyle" id="hAxLifestyle">
+          <input type="hidden" name="gender" id="hGender">
+          <input type="hidden" name="age" id="hAge">
+          <input type="hidden" name="purposeText" id="hPurpose">
+          <input type="hidden" name="pageHost" id="hHost">
+          <input type="hidden" name="ua" id="hUa">
+
+          <button class="btn seal" type="submit" id="btnSubmit" style="width:100%">送信する</button>
+          <div class="err center" id="formErr"></div>
+        </form>
+        <div class="thanks" id="thanks">
+          <div class="chk">✓</div>
+          <h3 style="font-size:18px" id="thanksTitle"></h3>
+          <p class="small" id="thanksBody"></p>
+        </div>
+      </div>
+
+      <div class="resfoot">
+        <button class="btn ghost" id="btnPrint" type="button">カルテを印刷／PDFで保存</button>
+        <button class="btn ghost" id="btnRedo" type="button">もう一度、別の回答で試す</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 薄毛のしくみ・毛周期（GEO本文・HowTo と一致） ===== -->
+<section id="method">
+  <div class="wrap">
+    <h2>薄毛のしくみと、毛周期の考え方</h2>
+    <p class="sec-sub">なぜ「続けて経過をみる」ことが大切なのか</p>
+    <p style="font-size:14.5px" id="cycleIntro"></p>
+    <div class="cyclefig" aria-hidden="true">
+      <div class="cyphase"><p class="cn">成長期</p><p class="cd">髪が伸びていく期間（数年）</p><span class="ca">→</span></div>
+      <div class="cyphase"><p class="cn">退行期</p><p class="cd">成長がゆるやかに（数週間）</p><span class="ca">→</span></div>
+      <div class="cyphase"><p class="cn">休止期</p><p class="cd">抜けて次に備える（数ヶ月）</p><span class="ca">↺</span></div>
+    </div>
+    <h3 style="font-size:17px;margin:20px 0 4px" id="howToTitle">薄毛の原因タイプの見分け方</h3>
+    <ol class="steps-ol" id="howToList"></ol>
+    <div class="notice" style="margin-top:20px" id="methodDisclaimer"></div>
+  </div>
+</section>
+
+<!-- ===== FAQ（可視・FAQPage schema と一致） ===== -->
+<section id="faq">
+  <div class="wrap">
+    <h2>よくある質問</h2>
+    <p class="sec-sub">薄毛の原因タイプ・頭皮環境・毛周期について</p>
+    <div class="faq" id="faqList"></div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap">
+    <div id="footBrand"></div>
+    <p class="foot-discl" id="footDisclaimer"></p>
+    <p class="foot-discl">© <span class="num" id="year"></span> からだのカルテ ／ 本ページは薄毛の原因の傾向を知るための情報提供であり、医療診断・治療・効果を保証するものではありません。エスロッソ製品は健康補助食品または化粧品・医薬部外品の区分に応じた範囲でご案内しています。気になる症状は医療機関にご相談ください。</p>
+  </div>
+</footer>
+
+<script>
+/* =========================================================================
+   からだのカルテ — 薄毛・頭皮環境チェック
+   - 採点・タイプ判定は全てブラウザ内（外部API・生成AIを呼ばない＝継続課金ゼロ）
+   - ロジックの根拠・簡略化・薬機法の前提は README.md / config.json / 本コメントに明記
+   ---------------------------------------------------------------------------
+   採点：各設問の選択肢は4軸（内的/頭皮/栄養/生活）に weight(0-3) を持つ。
+     軸ごと raw=選択weight合計、max=各設問の最大weight合計 → riskPct=raw/max*100
+     環境スコア(目安)=100 - 全軸合算riskPct、clampで極端値を丸める（高いほど健やか傾向）
+   タイプ判定：性別で候補軸を調整（男性は栄養軸をインナーケア=内的へ一部寄せVerde除外／
+     女性は栄養軸=Verde候補）。閾値超えの軸が2つ以上→複合型、1つ→その軸型、
+     生活軸が高く1軸該当なら複合寄り、該当なしは最大軸を採用。
+   ※本ツールは「傾向の目安」。医療診断ではなく、効果効能を保証しない（薬機法）。
+   ========================================================================= */
+var CONFIG=null, DG=null, STATE={answers:{}}, STEP=0, MAX_STEP=0, lastResult=null;
+
+function txt(id,v){var el=document.getElementById(id); if(el&&v!=null) el.textContent=v;}
+function ph(v){return typeof v==='string' && v.indexOf('__')===0;} /* 未設定プレースホルダ判定 */
+function num2(n){return String(n<10?'0'+n:n);}
+
+/* ---------- 採点 ---------- */
+function axisMaxes(){
+  var mx={internal:0,scalp:0,nutrition:0,lifestyle:0};
+  DG.steps.forEach(function(st){ st.questions.forEach(function(q){
+    var per={internal:0,scalp:0,nutrition:0,lifestyle:0};
+    (q.options||[]).forEach(function(o){ for(var k in per){ if(o.w&&o.w[k]!=null) per[k]=Math.max(per[k],o.w[k]); } });
+    for(var k in mx) mx[k]+=per[k];
+  });});
+  return mx;
+}
+function compute(){
+  var raw={internal:0,scalp:0,nutrition:0,lifestyle:0};
+  DG.steps.forEach(function(st){ st.questions.forEach(function(q){
+    var a=STATE.answers[q.id]; if(a&&a.w){ for(var k in raw){ if(a.w[k]!=null) raw[k]+=a.w[k]; } }
+  });});
+  var mx=axisMaxes();
+  var risk={}, totalRaw=0, totalMax=0;
+  for(var k in raw){ risk[k]=mx[k]>0?(raw[k]/mx[k]*100):0; totalRaw+=raw[k]; totalMax+=mx[k]; }
+  var sc=DG.scoring;
+  var score=Math.round(100 - (totalMax>0?totalRaw/totalMax*100:0));
+  score=Math.max(sc.scoreClampMin, Math.min(sc.scoreClampMax, score));
+
+  var gender=(STATE.answers.gender||{}).v || 'male';
+  var age=(STATE.answers.age||{}).v || '';
+  var r={internal:risk.internal, scalp:risk.scalp, nutrition:risk.nutrition, lifestyle:risk.lifestyle};
+  var core;
+  if(gender==='male'){ r.internal=Math.min(100, r.internal + r.nutrition*0.5); core=['internal','scalp']; }
+  else { core=['internal','scalp','nutrition']; }
+  var th=sc.highThreshold;
+  var highs=core.filter(function(a){return r[a]>=th;});
+  var lifeHigh=r.lifestyle>=th;
+  var type;
+  if(highs.length>=sc.complexMinHighAxes) type='complex';
+  else if(highs.length===1 && lifeHigh && sc.lifestyleAmplifies) type='complex';
+  else if(highs.length===1) type=highs[0];
+  else type=core.reduce(function(a,b){return r[b]>r[a]?b:a;}, core[0]);
+
+  return {score:score, risk:risk, type:type, dominant:core.reduce(function(a,b){return r[b]>r[a]?b:a;},core[0]),
+    gender:gender, age:age};
+}
+function cfg(){return DG.scoring;}
+
+/* ---------- カルテ番号（発行の記録性） ---------- */
+function karteNumber(res){
+  var d=new Date();
+  var ds=d.getFullYear()+num2(d.getMonth()+1)+num2(d.getDate());
+  var seed=res.type+res.score+res.gender+res.age+JSON.stringify(Object.keys(STATE.answers).map(function(k){return STATE.answers[k].v;}));
+  var h=0; for(var i=0;i<seed.length;i++){ h=(h*31+seed.charCodeAt(i))>>>0; }
+  var code=('000'+(h%10000)).slice(-4);
+  return {no:'KRD-'+ds+'-'+code, date:d.getFullYear()+'.'+num2(d.getMonth()+1)+'.'+num2(d.getDate())};
+}
+
+/* ---------- ステップUI ---------- */
+function renderSteps(){
+  var host=document.getElementById('steps'); host.innerHTML='';
+  DG.steps.forEach(function(st,si){
+    var div=document.createElement('div'); div.className='step'; div.setAttribute('data-step',si); if(si!==0) div.hidden=true;
+    var html='<p class="steplabel">STEP '+(si+1)+' / '+DG.steps.length+' ・ '+st.label+'</p>'+
+             '<h3>'+st.title+'</h3>'+(st.hint?'<p class="hint">'+st.hint+'</p>':'');
+    st.questions.forEach(function(q){
+      var two=(q.options.length<=2)?' two':'';
+      html+='<fieldset class="q"><legend class="ql">'+q.q+'</legend><div class="opts'+two+'" data-q="'+q.id+'">';
+      q.options.forEach(function(o){
+        html+='<label class="opt"><input type="radio" name="'+q.id+'" value="'+o.v+'"><span class="t">'+o.label+'</span></label>';
+      });
+      html+='</div></fieldset>';
+    });
+    html+='<div class="err" id="err'+si+'"></div>';
+    div.innerHTML=html; host.appendChild(div);
+  });
+  // bind options
+  DG.steps.forEach(function(st){ st.questions.forEach(function(q){
+    var box=document.querySelector('.opts[data-q="'+q.id+'"]');
+    box.querySelectorAll('input').forEach(function(inp){
+      inp.addEventListener('change', function(){
+        var opt=null; q.options.forEach(function(o){ if(o.v===inp.value) opt=o; });
+        STATE.answers[q.id]={v:inp.value, w:opt?opt.w:{}};
+        box.querySelectorAll('.opt').forEach(function(l){l.classList.remove('sel');});
+        inp.closest('.opt').classList.add('sel');
+        validateStep();
+      });
+    });
+  });});
+  MAX_STEP=DG.steps.length-1;
+}
+function renderStepbar(){
+  var bar=document.getElementById('stepbar'); bar.innerHTML='';
+  for(var i=0;i<=MAX_STEP;i++){ var s=document.createElement('div'); s.className='seg'+(i<STEP?' done':'')+(i===STEP?' on':''); bar.appendChild(s); }
+}
+function showStep(n,noScroll){
+  STEP=n; renderStepbar();
+  document.querySelectorAll('.step').forEach(function(s){ s.hidden=(Number(s.getAttribute('data-step'))!==n); });
+  document.getElementById('btnBack').style.visibility=n===0?'hidden':'visible';
+  document.getElementById('btnNext').textContent=(n===MAX_STEP)?'カルテを発行する →':'次へ';
+  validateStep();
+  if(!noScroll) document.getElementById('wizard').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function validateStep(show){
+  var st=DG.steps[STEP], ok=true;
+  st.questions.forEach(function(q){ if(!STATE.answers[q.id]) ok=false; });
+  var e=document.getElementById('err'+STEP); if(e) e.textContent = (!ok&&show)?'すべての項目をお選びください。':'';
+  document.getElementById('btnNext').disabled=!ok;
+  return ok;
+}
+
+/* ---------- 結果（カルテ票）描画 ---------- */
+var AXORDER=[['internal','内的要因'],['scalp','頭皮環境'],['nutrition','栄養・ダメージ'],['lifestyle','生活習慣']];
+function renderResult(){
+  var res=compute(); lastResult=res;
+  var t=CONFIG.usuge.types[res.type];
+  document.getElementById('wizard').style.display='none';
+  var rw=document.getElementById('resultwrap'); rw.style.display='block';
+
+  var kn=karteNumber(res);
+  txt('karteNo',kn.no); txt('karteDate',kn.date);
+
+  // score
+  document.getElementById('scoreVal').textContent=res.score;
+  setTimeout(function(){
+    document.getElementById('scoreFill').style.width=res.score+'%';
+    document.getElementById('scoreMk').style.left=res.score+'%';
+  },60);
+
+  // prev delta（URL ?prev=NN で前回スコアがあれば比較）
+  var params=new URLSearchParams(location.search);
+  var prev=parseInt(params.get('prev'),10);
+  if(!isNaN(prev)){
+    var d=res.score-prev, sign=d>0?'+':'';
+    document.getElementById('prevDelta').style.display='block';
+    document.getElementById('prevDelta').innerHTML='前回のカルテ '+prev+' → 今回 '+res.score+'（<b>'+sign+d+'</b>）';
+  }
+
+  // type + seal
+  txt('sealText', t.seal); txt('typeName', t.name); txt('typeSub', t.sub);
+  var stamp=document.getElementById('sealStamp');
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){ stamp.classList.remove('seal-anim'); void stamp.offsetWidth; stamp.classList.add('seal-anim'); }
+
+  // axis bars
+  var ab=document.getElementById('axisBars'); ab.innerHTML='';
+  AXORDER.forEach(function(a){
+    var key=a[0], val=Math.round(res.risk[key]);
+    var dom=(key===res.dominant)?' dom':'';
+    var row=document.createElement('div'); row.className='axis'+dom;
+    row.innerHTML='<span class="an">'+a[1]+'</span><span class="at"><span class="af"></span></span><span class="av">'+val+'</span>';
+    ab.appendChild(row);
+    (function(fill,v){ setTimeout(function(){fill.style.width=v+'%';},80); })(row.querySelector('.af'),val);
+  });
+
+  // finding / cycle / approach
+  txt('findingText', t.finding);
+  var hc=CONFIG.usuge.hairCycle;
+  txt('cycleTitle', hc.title); txt('cycleText', hc.text); txt('cycleNote', hc.note);
+  txt('approachText', t.approach);
+
+  // products
+  var pbox=document.getElementById('products'); pbox.innerHTML='';
+  var picons={boston:'ic-pill',shampoo:'ic-bottle',essence:'ic-drop',verde:'ic-leaf'};
+  (t.products||[]).forEach(function(p){
+    var ic=picons[p.urlKey]||'ic-leaf';
+    var d=document.createElement('div'); d.className='prod';
+    d.innerHTML='<span class="pi"><svg aria-hidden="true"><use href="#'+ic+'"/></svg></span>'+
+      '<span><p class="pn">'+p.name+'</p><span class="pcat">'+p.category+'</span>'+
+      '<p class="pd">'+p.ingredient+'</p><p class="pnote">'+p.note+'</p></span>';
+    pbox.appendChild(d);
+  });
+
+  // disclaimer
+  document.getElementById('resultDisclaimer').innerHTML='<strong>これは傾向の目安です。</strong> '+CONFIG.usuge.disclaimer.onResult+' '+CONFIG.usuge.disclaimer.yakkihou;
+
+  // offer + CTAs
+  var off=CONFIG.usuge.offer, es=CONFIG.esrosso;
+  txt('offerTitle', off.title); txt('offerLead', off.lead);
+  txt('guaranteeBadge', '◎ '+(es.guarantee?es.guarantee.label:'全額返金保証'));
+  var ctas=document.getElementById('offerCtas'); ctas.innerHTML='';
+  var prodUrl=(CONFIG.usuge.productUrls||{})[(t.products[0]||{}).urlKey];
+  // ① らくトク便（定期）＝LTV本線を主CTAに
+  if(es.rakutoku && es.rakutoku.url && !ph(es.rakutoku.url)) ctas.appendChild(mkCta(off.ctaRakutokuLabel, es.rakutoku.url, 'main'));
+  else ctas.appendChild(mkCta(off.ctaRakutokuLabel+'（準備中）', null, 'main'));
+  // ② 単品はサブ導線
+  if(prodUrl && !ph(prodUrl)) ctas.appendChild(mkCta(off.ctaProductLabel, prodUrl, 'ghost'));
+  else ctas.appendChild(mkCta(off.ctaProductLabel+'（準備中）', null, 'ghost'));
+  // ③ LINE（設定時のみ／未設定なら下部の再診断ブロックが受け皿）
+  if(es.line && es.line.url && !ph(es.line.url)) ctas.appendChild(mkCta(off.ctaLineLabel, es.line.url, 'line'));
+  if(off.microtrust){ var mt=document.createElement('p'); mt.className='small'; mt.style.cssText='color:#c3d2ca;text-align:center;margin:12px 0 0;font-size:11.5px'; mt.textContent=off.microtrust; ctas.appendChild(mt); }
+
+  // recheck
+  var rc=CONFIG.usuge.recheck;
+  txt('recheckTitle', rc.title); txt('recheckText', rc.text);
+  var rcc=document.getElementById('recheckCta'); rcc.textContent=rc.cta;
+  if(es.line && es.line.url && !ph(es.line.url)){ rcc.setAttribute('href', es.line.url); }
+  else { rcc.removeAttribute('target'); rcc.setAttribute('href','#shindan'); }
+
+  // hidden lead values（送信で営業/CRMへ渡る＝原因タイプ判定済みの見込み客）
+  document.getElementById('hKarteNo').value=kn.no;
+  document.getElementById('hType').value=t.name;
+  document.getElementById('hScore').value=res.score;
+  document.getElementById('hAxInternal').value=Math.round(res.risk.internal);
+  document.getElementById('hAxScalp').value=Math.round(res.risk.scalp);
+  document.getElementById('hAxNutrition').value=Math.round(res.risk.nutrition);
+  document.getElementById('hAxLifestyle').value=Math.round(res.risk.lifestyle);
+  document.getElementById('hGender').value=res.gender;
+  document.getElementById('hAge').value=res.age;
+
+  // URL に結果を保存（localStorage不使用・共有/再診断比較用）
+  try{
+    var q=new URLSearchParams(); q.set('type',res.type); q.set('score',res.score); q.set('kn',kn.no);
+    history.replaceState(null,'', location.pathname+'?'+q.toString());
+  }catch(e){}
+
+  rw.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function mkCta(label,href,cls){
+  var a=document.createElement(href?'a':'button'); a.className='ctabtn '+cls; a.textContent=label;
+  if(href){ a.setAttribute('href',href); a.setAttribute('target','_blank'); a.setAttribute('rel','noopener'); }
+  else { a.type='button'; a.disabled=true; a.style.opacity='.55'; }
+  return a;
+}
+
+/* ---------- 静的テキスト差し込み ---------- */
+function hydrate(){
+  var u=CONFIG.usuge;
+  document.title=u.meta.title;
+  txt('brandMark', CONFIG.site.name); txt('brandSub', u.brand.sub);
+  // hero
+  txt('heroEyebrow', u.hero.eyebrow); txt('heroLead', u.hero.lead); txt('heroMeta', u.hero.meta); txt('heroCta', u.hero.cta);
+  if(u.hero.titleLines){ document.getElementById('heroTitle').innerHTML=u.hero.titleLines.map(function(l,i){return i===u.hero.titleLines.length-1?'<span class="nb accent">'+l+'</span>':l;}).join('<br>'); }
+  txt('directAnswer', u.geo.directAnswer);
+  // method
+  txt('cycleIntro', u.hairCycle.text);
+  txt('howToTitle', u.geo.howToTitle);
+  var ol=document.getElementById('howToList'); ol.innerHTML=''; u.geo.howToSteps.forEach(function(s){var li=document.createElement('li');li.textContent=s;ol.appendChild(li);});
+  txt('methodDisclaimer', u.disclaimer.short+' '+u.disclaimer.yakkihou);
+  // faq
+  var fl=document.getElementById('faqList'); fl.innerHTML=''; u.geo.faq.forEach(function(f){var d=document.createElement('details');d.innerHTML='<summary>'+f.q+'</summary><div class="a">'+f.a+'</div>';fl.appendChild(d);});
+  // form
+  txt('formTitle', u.form.title); txt('formBody', u.form.body);
+  txt('lPurpose', u.form.purposeLabel);
+  txt('lName', u.form.fields.name); txt('lEmail', u.form.fields.email); txt('lTel', u.form.fields.tel); txt('lMsg', u.form.fields.message);
+  txt('consentLabel', u.form.consentLabel);
+  txt('thanksTitle', u.thanks.title); txt('thanksBody', u.thanks.body);
+  var pz=document.getElementById('purposes'); pz.innerHTML='';
+  u.form.purposes.forEach(function(p){
+    var lab=document.createElement('label'); lab.className='pchk';
+    lab.innerHTML='<input type="checkbox" value="'+p.label+'"><span>'+p.label+'</span>';
+    lab.querySelector('input').addEventListener('change',function(){ lab.classList.toggle('sel',this.checked); });
+    pz.appendChild(lab);
+  });
+  // footer
+  document.getElementById('year').textContent=String(new Date().getFullYear());
+  txt('footDisclaimer', u.disclaimer.short+' '+u.form.privacyNote);
+  document.getElementById('footBrand').innerHTML='<strong style="color:#fff">'+CONFIG.esrosso.brand+'</strong>　<span style="color:#c3d2ca">'+CONFIG.esrosso.tagline+'</span>';
+  // JSON-LD（本文と一致）
+  var faqLd={"@context":"https://schema.org","@type":"FAQPage","mainEntity":u.geo.faq.map(function(f){return {"@type":"Question","name":f.q,"acceptedAnswer":{"@type":"Answer","text":f.a}};})};
+  document.getElementById('ld-faq').textContent=JSON.stringify(faqLd);
+  var howLd={"@context":"https://schema.org","@type":"HowTo","name":u.geo.howToTitle,"step":u.geo.howToSteps.map(function(s,i){return {"@type":"HowToStep","position":i+1,"text":s};})};
+  document.getElementById('ld-howto').textContent=JSON.stringify(howLd);
+}
+
+/* ---------- Turnstile ---------- */
+function loadTurnstile(){
+  var sk=CONFIG.gas.turnstileSitekey; if(!sk||ph(sk)) return;
+  var s=document.createElement('script'); s.src='https://challenges.cloudflare.com/turnstile/v0/api.js'; s.async=true; s.defer=true;
+  s.onload=function(){ try{ window.turnstile.render('#turnstile-holder',{sitekey:sk,theme:'light'});}catch(e){} };
+  document.head.appendChild(s);
+}
+
+/* ---------- 送信 ---------- */
+function submitLead(e){
+  e.preventDefault();
+  var errEl=document.getElementById('formErr'); errEl.textContent='';
+  var f=document.getElementById('leadForm');
+  if(f.website.value.trim()!==''){ showThanks(); return; } // honeypot
+  if(!f.name.value.trim()||!f.email.value.trim()){ errEl.textContent='お名前とメールアドレスをご入力ください。'; return; }
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email.value.trim())){ errEl.textContent='メールアドレスの形式をご確認ください。'; return; }
+  if(!document.getElementById('fConsent').checked){ errEl.textContent='プライバシーの取り扱いへの同意にチェックしてください。'; return; }
+  var sk=CONFIG.gas.turnstileSitekey, needTs=sk&&!ph(sk);
+  if(needTs){ var tk=document.querySelector('#turnstile-holder [name="cf-turnstile-response"]'); if(!tk||!tk.value){ errEl.textContent='セキュリティ認証（Turnstile）を完了してください。'; return; } }
+
+  // purposes
+  var ps=[]; document.querySelectorAll('#purposes input:checked').forEach(function(c){ps.push(c.value);});
+  document.getElementById('hPurpose').value=ps.join(' / ')||'（未選択）';
+  document.getElementById('hHost').value=location.hostname;
+  document.getElementById('hUa').value=navigator.userAgent;
+
+  var endpoint=CONFIG.gas.endpoint;
+  var btn=document.getElementById('btnSubmit'); btn.disabled=true; btn.textContent='送信中…';
+  if(!endpoint||ph(endpoint)){ console.warn('[karada-carte] GAS endpoint 未設定のため送信をスキップ。config.json の gas.endpoint を設定してください。'); showThanks(); return; }
+
+  var fd=new FormData(f);
+  fetch(endpoint,{method:'POST',body:fd,mode:'no-cors'}).then(function(){showThanks();}).catch(function(){showThanks();});
+}
+function showThanks(){
+  document.getElementById('leadForm').style.display='none';
+  document.getElementById('formTitle').style.display='none';
+  document.getElementById('formBody').style.display='none';
+  document.getElementById('thanks').style.display='block';
+  document.getElementById('thanks').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+/* ---------- 起動 ---------- */
+function bind(){
+  document.getElementById('btnNext').addEventListener('click',function(){ if(!validateStep())return; if(STEP===MAX_STEP){renderResult();return;} showStep(STEP+1); });
+  document.getElementById('btnBack').addEventListener('click',function(){ if(STEP>0) showStep(STEP-1); });
+  document.getElementById('btnRedo').addEventListener('click',function(){ location.href=location.pathname; });
+  document.getElementById('btnPrint').addEventListener('click',function(){ window.print(); });
+  document.getElementById('leadForm').addEventListener('submit',submitLead);
+}
+(function init(){
+  fetch('../config.json?t='+Date.now())
+    .then(function(r){ if(!r.ok) throw new Error('config'); return r.json(); })
+    .then(function(c){ CONFIG=c; DG=c.usuge.diagnosis; hydrate(); renderSteps(); bind(); loadTurnstile(); showStep(0,true); })
+    .catch(function(err){ document.getElementById('steps').innerHTML='<p style="color:#B0432F">設定ファイル(config.json)の読み込みに失敗しました。時間をおいて再度お試しください。</p>'; console.error(err); });
+})();
+// frame-busting
+try{ if(window.top!==window.self){ window.top.location=window.self.location; } }catch(e){ document.documentElement.style.display='none'; }
+</script>
+</body>
+</html>
