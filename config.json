@@ -4,7 +4,7 @@
 
   "gas": {
     "endpoint": "__GAS_EXEC_URL__",
-    "turnstileSitekey": "__TURNSTILE_SITEKEY__"
+    "turnstileSitekey": "0x4AAAAAADv0abekmmO5sg2v"
   },
 
   "site": {
