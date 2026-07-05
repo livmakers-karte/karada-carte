@@ -3,7 +3,7 @@
   "note_for_editors": "非エンジニアが安全に書き換える設定ファイルです。__で始まる値はBOSSが実データに差し替えるプレースホルダ（URL・キー等）。母屋(index.html)と各診断サブ(/usuge/ 等)がこの1枚を読みます。診断ロジックの係数(weight)を変えると採点・タイプ判定が変わります。薬機法の観点から、効果を断定する表現（生える・治る・発毛 等）は絶対に追記しないでください。",
 
   "gas": {
-    "endpoint": "__GAS_EXEC_URL__",
+    "endpoint": "https://script.google.com/macros/s/AKfycbxxsCJuZ2tKgkCw1ex6Q77wILbjcXtR2ZDn6PbKQAou0866ssMqKoHr4P_Z0TcDFfG_/exec",
     "turnstileSitekey": "0x4AAAAAADv0abekmmO5sg2v"
   },
 
