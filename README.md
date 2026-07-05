@@ -129,6 +129,28 @@
 
 ---
 
+## 6.5 GEO/AEO・セキュリティ強化（2026-07-05）
+**GEO/AEO：**
+- 構造化データを拡充：`BreadcrumbList`（/usuge/）、`WebPage`＋`SpeakableSpecification`（直接回答・FAQを音声/AEO対象に）、
+  `WebApplication` に `publisher`（アートナップ株式会社）・`isPartOf`（WebSite）・`inLanguage`・`isAccessibleForFree` を追加。
+  母屋にも可視FAQ＋`FAQPage` を追加（`config.json > home.faq`）。既存の WebSite/Organization/FAQPage/HowTo と一致。
+- **llms.txt** を新設（`/llms.txt`）＝AI検索/生成エンジン向けの引用しやすい要約（薬機法の注意文つき）。
+- **robots.txt** のAIクローラー許可を拡張（GPTBot/OAI-SearchBot/ChatGPT-User/ClaudeBot/Claude-SearchBot/anthropic-ai/
+  PerplexityBot/Perplexity-User/Google-Extended/Applebot(-Extended)/bingbot/Meta-ExternalAgent/FacebookBot/CCBot/
+  cohere-ai/YouBot/DuckAssistBot/Amazonbot/Diffbot）。
+- メタ拡充：`og:locale=ja_JP`・`theme-color`・`author`。
+
+**セキュリティ：**
+- 実行JSを外部ファイル化（`js/home.js`・`usuge/app.js`）し、**CSPから `script-src 'unsafe-inline'` を排除**
+  （母屋=`script-src 'self'`／usuge=`script-src 'self' https://challenges.cloudflare.com`）。XSS耐性を大幅強化。
+  ※JSON-LD（`type=application/ld+json`）は非実行データのためCSPの制限を受けず、そのままインラインで機能します。
+  ※`style-src` は要素の inline style を使うため `'unsafe-inline'` を維持（スクリプト実行経路ではない残存項目）。
+- CSPに `upgrade-insecure-requests` と `form-action`（母屋=`'none'`／usuge=`'self' https://script.google.com`）を追加。
+- フォームに **最短送信時間チェック**（`elapsedMs`）を追加。GASが2.5秒未満の送信をbotとして破棄（honeypot＋Turnstile＋ホスト制限と多層防御）。
+- 将来のサーバ移設用に **`_headers`（Cloudflare Pages/Netlify）** と **`.htaccess`（Apache）** を同梱：
+  HSTS・X-Frame-Options・X-Content-Type-Options(nosniff)・Referrer-Policy・Permissions-Policy・COOP/CORP・HTTPS強制・
+  機微ファイル(.gs/.md)配信禁止。**GitHub Pages では両ファイルは無効**（HTTPヘッダ不可）で、稼働中は meta CSP＋frame-busting が同等の防御を担う。
+
 ## 7. 免責
 本サイトは健康・からだに関する情報提供および傾向の目安を示すものであり、医療診断・治療・
 特定の効果効能を保証するものではありません。エスロッソ製品は健康補助食品または化粧品・

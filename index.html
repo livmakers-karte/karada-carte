@@ -5,8 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
 <!-- ===== セキュリティ（静的ホスティング用・web-security-baseline 準拠） ===== -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; connect-src 'self'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#1E3A34">
+<meta name="author" content="アートナップ株式会社">
+<meta name="format-detection" content="telephone=no">
 
 <!-- 公開前は noindex（母屋は準備中）。公開時に index,follow へ切替＝公開ボタン。 -->
 <meta name="robots" content="noindex, nofollow">
@@ -23,6 +26,7 @@
 <meta property="og:description" content="からだの気になる悩みを、カルテのように数値で記録する無料診断メディア。まずは今の状態を目安で知る。">
 <meta property="og:url" content="https://karada-carte.jp/">
 <meta property="og:image" content="https://karada-carte.jp/assets/ogp.png">
+<meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
 
 <!-- 構造化データ（母屋＝WebSite / Organization）。JS で org 名を config から補完。 -->
@@ -37,6 +41,7 @@
 }
 </script>
 <script type="application/ld+json" id="ld-org"></script>
+<script type="application/ld+json" id="ld-faq"></script>
 
 <style>
   :root{
@@ -132,6 +137,15 @@
   .pb-eyebrow{color:#e2ebd9;font-size:11.5px;letter-spacing:.2em;font-weight:700;margin:0 0 12px}
   .pb-title{font-family:var(--serif);font-size:clamp(24px,5vw,38px);color:#fff;margin:0 0 12px;line-height:1.42;text-shadow:0 2px 18px rgba(0,0,0,.45)}
   .pb-lead{color:#edf2ec;font-size:clamp(14px,2.2vw,16px);max-width:38em;margin:0;text-shadow:0 1px 12px rgba(0,0,0,.35)}
+  /* ===== 母屋FAQ（AEO） ===== */
+  .faq-sec{margin:40px 0 8px}
+  .faq-sec .fl{font-size:11.5px;letter-spacing:.18em;color:var(--pine);font-weight:700;margin:0 0 8px}
+  .faq details{border-bottom:1px solid var(--line);padding:2px 0}
+  .faq summary{cursor:pointer;list-style:none;padding:14px 28px 14px 2px;font-weight:700;color:var(--pine);font-size:15px;position:relative;font-family:var(--serif)}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"＋";position:absolute;right:4px;top:13px;color:var(--seal);font-weight:700}
+  .faq details[open] summary::after{content:"－"}
+  .faq .a{padding:0 2px 14px;color:var(--ink);font-size:13.5px;line-height:1.8}
 </style>
 </head>
 <body>
@@ -203,6 +217,11 @@
     <div class="grid" id="tiles"></div>
 
     <p class="note" id="homeNote"></p>
+
+    <div class="faq faq-sec">
+      <p class="fl" id="homeFaqLabel">からだのカルテについて</p>
+      <div id="homeFaqList"></div>
+    </div>
   </div>
 </main>
 
@@ -218,58 +237,6 @@
   <div class="wrap">© <span class="num" id="year"></span> artnap co.,ltd. ／ からだのカルテ（運営：アートナップ株式会社） ／ 本サイトは健康・からだに関する情報提供および傾向の目安を示すもので、医療診断・治療・効果を保証するものではありません。気になる症状がある場合は医療機関にご相談ください。</div>
 </footer>
 
-<script>
-(function(){
-  function txt(id,v){ var el=document.getElementById(id); if(el&&v!=null) el.textContent=v; }
-  fetch('config.json?t=' + Date.now())
-    .then(function(r){ if(!r.ok) throw new Error('config'); return r.json(); })
-    .then(function(c){
-      var h = c.home || {};
-      document.title = (h.meta && h.meta.title) || document.title;
-      txt('brandSub', c.site && c.site.sub);
-      if (h.hero){
-        txt('eyebrow', h.hero.eyebrow);
-        if (h.hero.titleLines && h.hero.titleLines.length){
-          document.getElementById('homeTitle').innerHTML =
-            h.hero.titleLines.map(function(l,i){ return i===h.hero.titleLines.length-1 ? '<span class="nb">'+l+'</span>' : l; }).join('<br>');
-        }
-        txt('homeLead', h.hero.lead);
-      }
-      txt('featureLabel', h.featureLabel);
-      txt('growLabel', h.growLabel);
-      txt('homeNote', h.note);
-      if (h.feature){
-        var fc=document.getElementById('featureCard'); if(h.feature.href) fc.setAttribute('href', h.feature.href);
-        txt('featureBadge', h.feature.badge);
-        txt('featureTitle', h.feature.title);
-        txt('featureDesc', h.feature.desc);
-        txt('featureMeta', h.feature.meta);
-      }
-      // tiles
-      var box=document.getElementById('tiles'); box.innerHTML='';
-      (h.tiles||[]).forEach(function(t){
-        var d=document.createElement('div'); d.className='tile';
-        d.innerHTML='<svg class="ic" aria-hidden="true"><use href="#'+(t.icon||'ic-mineral')+'"/></svg>'+
-          '<p class="t">'+t.title+'</p><p class="d">'+t.desc+'</p><span class="st">'+(t.status||'準備中')+'</span>';
-        box.appendChild(d);
-      });
-      // Organization JSON-LD（本文と一致する org 情報）
-      if (h.org){
-        var org={ "@context":"https://schema.org","@type":"Organization",
-          "name":h.org.name||"からだのカルテ","url":h.org.url||"https://karada-carte.jp/",
-          "description":h.org.description||"" };
-        if (h.org.legalName && h.org.legalName.indexOf('__')!==0) org.legalName=h.org.legalName;
-        document.getElementById('ld-org').textContent=JSON.stringify(org);
-      }
-    })
-    .catch(function(e){
-      document.getElementById('homeLead').textContent='設定ファイルの読み込みに失敗しました。時間をおいて再度お試しください。';
-      console.error(e);
-    });
-  document.getElementById('year').textContent=String(new Date().getFullYear());
-})();
-// frame-busting（クリックジャッキング対策）
-try{ if(window.top!==window.self){ window.top.location=window.self.location; } }catch(e){ document.documentElement.style.display='none'; }
-</script>
+<script src="js/home.js"></script>
 </body>
 </html>

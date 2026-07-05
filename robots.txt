@@ -1,24 +1,60 @@
 # からだのカルテ robots.txt
-# 公開後の想定。公開前は各HTMLの meta robots=noindex が優先されます。
+# 公開後の想定。公開前は各HTMLの meta robots=noindex が優先されます（公開時に index へ切替）。
+
+# 一般の検索エンジン
 User-agent: *
 Allow: /
 
-# AI検索・生成エンジンのクローラーを明示的に許可（GEO/AEO）
+# ---- AI検索・生成・回答エンジンのクローラーを明示的に許可（GEO/AEO：引用最大化） ----
+# OpenAI
 User-agent: GPTBot
 Allow: /
 User-agent: OAI-SearchBot
 Allow: /
 User-agent: ChatGPT-User
 Allow: /
+# Anthropic (Claude)
 User-agent: ClaudeBot
 Allow: /
 User-agent: Claude-Web
 Allow: /
+User-agent: Claude-SearchBot
+Allow: /
 User-agent: anthropic-ai
 Allow: /
+# Perplexity
 User-agent: PerplexityBot
 Allow: /
+User-agent: Perplexity-User
+Allow: /
+# Google (AI Overviews / Gemini 学習許可)
 User-agent: Google-Extended
+Allow: /
+# Apple Intelligence
+User-agent: Applebot
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
+# Microsoft Copilot / Bing
+User-agent: bingbot
+Allow: /
+# Meta AI
+User-agent: Meta-ExternalAgent
+Allow: /
+User-agent: FacebookBot
+Allow: /
+# その他 回答/学習エンジン
+User-agent: CCBot
+Allow: /
+User-agent: cohere-ai
+Allow: /
+User-agent: YouBot
+Allow: /
+User-agent: DuckAssistBot
+Allow: /
+User-agent: Amazonbot
+Allow: /
+User-agent: Diffbot
 Allow: /
 
 Sitemap: https://karada-carte.jp/sitemap.xml

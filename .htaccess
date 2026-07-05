@@ -1,0 +1,37 @@
+# からだのカルテ — Apache セキュリティ設定
+# ※GitHub Pages では .htaccess は無効です。Apache系サーバへ移設した際に有効化されます。
+#   GitHub Pages 稼働中は、各HTMLの meta CSP＋frame-busting が同等の防御を担います。
+
+# ---- HTTPS 正規化 ----
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} off
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+</IfModule>
+
+# ---- セキュリティヘッダ ----
+<IfModule mod_headers.c>
+  Header always set X-Frame-Options "DENY"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=(), interest-cohort=()"
+  Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always set Cross-Origin-Resource-Policy "same-origin"
+
+  # 既定（母屋等）：外部通信なしの厳格CSP
+  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; connect-src 'self'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests"
+
+  # /usuge/ は Turnstile と GAS 送信を許可（診断フォーム）
+  <If "%{REQUEST_URI} =~ m#^/usuge/#">
+    Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com; form-action 'self' https://script.google.com; frame-ancestors 'none'; upgrade-insecure-requests"
+  </If>
+</IfModule>
+
+# ---- 機微ファイルの配信禁止 ----
+<FilesMatch "\.(gs|md)$">
+  Require all denied
+</FilesMatch>
+<Files ".htaccess">
+  Require all denied
+</Files>

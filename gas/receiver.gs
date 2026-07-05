@@ -39,6 +39,12 @@ function doPost(e){
       return json_({ ok:true, skipped:'honeypot' });
     }
 
+    // 1.5) 最短送信時間（bot対策）：フォーム表示から極端に早い送信は破棄
+    var elapsed = parseInt(p.elapsedMs, 10);
+    if (!isNaN(elapsed) && elapsed >= 0 && elapsed < 2500){
+      return json_({ ok:true, skipped:'too_fast' });
+    }
+
     // 2) 送信元ホストの許可チェック（未設定なら素通し）
     var allowed = String(props.getProperty('ALLOWED_HOSTS') || '').split(',')
       .map(function(s){ return s.trim().toLowerCase(); }).filter(String);
